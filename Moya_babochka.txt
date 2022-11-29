@@ -1,0 +1,108 @@
+//Вершинный шейдер
+ varying vec2 texCoord;
+ varying vec3 Normal;
+ 
+ void main(void)
+ {
+    gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix*gl_Vertex;
+    texCoord = gl_MultiTexCoord0.xy;
+    Normal = normalize(gl_Normal);
+ }
+
+
+
+//Фрагментарный шейдер
+varying vec2 texCoord;
+varying vec3 Normal;
+
+ 
+ void main(void)
+ {
+    float x = texCoord.x;
+   float y = texCoord.y;
+   
+   x = x - 0.1;
+
+   //центральное сердце(крыло)
+   float x3 = x*2.5-1;
+   float y3 = y*3-0.8;
+   
+    if( ((x3) * (x3) + (y3 * y3)-1)*((x3) * (x3) + (y3 * y3)-1)*((x3) * (x3) + (y3 * y3)-1) < x3*x3*y3*y3*y3)
+    gl_FragColor = vec4(0.1, 0.0, 0.8, 1.0);
+    
+   //сердце узор
+    float x2 = x*12.4-3.6;
+   float y2 = y*8.8-1.8;
+   
+    if( ((x2) * (x2) + (y2 * y2)-1)*((x2) * (x2) + (y2 * y2)-1)*((x2) * (x2) + (y2 * y2)-1) < x2*x2*y2*y2*y2)
+    gl_FragColor = vec4(0.5, 0.5, 0.4, 1.2);
+    
+    
+   //остальные узоры крыльев
+   x2 = x2*1.8;
+   y2 = y2*1.8-0.1;
+   
+    if( ((x2) * (x2) + (y2 * y2)-1)*((x2) * (x2) + (y2 * y2)-1)*((x2) * (x2) + (y2 * y2)-1) < x2*x2*y2*y2*y2)
+    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+   
+   x2 = (x*6.4-3.6)*1.7;
+   y2 = (y*5.8-1.2)*1.7;
+   
+    if( ((x2) * (x2) + (y2 * y2)-1)*((x2) * (x2) + (y2 * y2)-1)*((x2) * (x2) + (y2 * y2)-1) < x2*x2*y2*y2*y2)
+    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+    
+    float a = -0.07;
+    x2 = x - 0.7;
+    y2 = y - 0.5;
+    
+    if( x2 + y2 > a && -x2 + y2 > a && x2 - y2> a && -x2 - y2 > a)
+      gl_FragColor = vec4(0.1, 1.0, 0.5, 1.0);
+      
+    x2 = x - 0.1;
+    y2 = y - 0.43;
+    
+    if( x2 + y2 > a && -x2 + y2 > a && x2 - y2> a && -x2 - y2 > a)
+      gl_FragColor = vec4(0.5, 0.9, 0.1, 1.0);
+      
+    float c = 0.1;
+    x2 =x - 0.05;
+    y2 =y - 0.12;
+   if(x2>0.2 && x2<0.5 && y2>0.3 && y2<0.4)
+        gl_FragColor=vec4(1,1,0,1);
+
+   
+   //тело
+   if( ((x - 0.4) * (x - 0.4)) / ( 1.4 * 1.4 ) +  (y * y) / ( 0.4 * 0.4) < (0.5 * 0.1) )
+      gl_FragColor = vec4(0.0, 0.7, 0.7, 1.0);
+      
+    //узоры тела
+    x2 = x + 0.17;
+    y2 = y - 0.01;
+    if( (x2 - 0.7) * (x2 - 0.7) + (y2 * y2) < 0.1 * 0.01)
+      gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);
+    x2 = x + 0.27;
+    if( (x2 - 0.7) * (x2 - 0.7) + (y2 * y2) < 0.08 * 0.01)
+      gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);
+    x2 = x + 0.37;
+    if( (x2 - 0.7) * (x2 - 0.7) + (y2 * y2) < 0.06 * 0.01)
+      gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);
+    x2 = x + 0.47;
+    if( (x2 - 0.7) * (x2 - 0.7) + (y2 * y2) < 0.04 * 0.01)
+      gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);
+      
+    
+    if( ((x - 0.4) * (x - 0.4)) / ( 1.4 * 1.4 ) +  (y * y) / ( 0.1 * 0.1) < (0.3 * 0.1) )
+      gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);
+      
+    //голова
+    if( (x - 0.7) * (x - 0.7) + (y * y) < 0.9 * 0.01)
+      gl_FragColor = vec4(0.4, 0.0, 0.8, 1.0);
+    
+    x2 = x - 0.08;
+    y2 = y - 0.04;
+    //глаза
+    if( (x2 - 0.7) * (x2 - 0.7) + (y2 * y2) < 0.1 * 0.01)
+      gl_FragColor = vec4(0.5, 1.0, 0.0, 1.0);
+    
+ }
+ 
